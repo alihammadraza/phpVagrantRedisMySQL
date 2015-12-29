@@ -9,7 +9,7 @@ You can clone/run the entire system by doing:
 * `vagrant up --provision`
 
 
-###The architecture of the code in 'web' folder is based on service/entity model where entities act like validating data types and are consumed inside services which perform various functions.
+###The architecture of the code in 'code/web' folder is based on service/entity model where entities act like validating data types and are consumed inside services which perform various functions.
 
 
 # SMS Storage API / index.php & redis.php
@@ -20,7 +20,8 @@ via SMS to a so-called shortcode; the Client sends an SMS with subscription requ
 to shortcode 32788 to subscribe to mobile learning services.
 
 An example of a call through to the MO API would look like this:
-http://localhost/index.php?msisdn=60123456789&operatorid=3&shortcodeid=32788&text=ON+LEARNING
+
+* http://localhost/index.php?msisdn=60123456789&operatorid=3&shortcodeid=32788&text=ON+LEARNING
 
 * index.php uses moService object to store these passed GET values inside MySQL db after performing necessary validation.
 
@@ -35,8 +36,10 @@ but the same approach like the one in redis where data is saved first and cron u
 can be applied too in order to improve performance.
 
 In order to try and speed up the application I have turned on php zend opcache which
-resulted in a sizable improvement in page load times on apache bench. But I think
-more can be done here if we were to use nginx instead of apache2 or put haproxy at top
+resulted in a sizable improvement in page load times on apache bench 
+* ab -n 1000 -c 10 "http://localhost/index.php?msisdn=60123456789&operatorid=3&shortcodeid=8&text=ON+GAMES" 
+
+But I think more can be done here if we were to use nginx instead of apache2 or put haproxy at top
 and only channel index.php requests to nginx with the other going through apache. 
 
 
