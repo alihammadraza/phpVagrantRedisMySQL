@@ -1,0 +1,5 @@
+.vagrant
+.idea
+/registermo
+/code/web/vendor
+git-export-dir/

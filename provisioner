@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+export DEBIAN_FRONTEND=noninteractive
+
+installpkg(){
+    dpkg-query --status $1 >/dev/null || apt-get install -y $1
+}
+
+installpkg php5
+installpkg php5-mysql
+installpkg redis-server
+installpkg mysql-server
+installpkg apache2-utils
+installpkg apache2-suexec-custom
+installpkg unzip
+installpkg dos2unix
+
+echo "ServerName localhost" > /etc/apache2/conf-enabled/servername.conf
+a2enmod suexec
+a2dissite 000-default.conf
+cp /tmp/001-talented.conf /etc/apache2/sites-available
+mv /tmp/temp-php.ini /etc/php5/apache2/php.ini
+a2ensite  001-talented.conf
+curl -sS https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer
+cd /home/vagrant/code/web
+composer require predis/predis
+wget https://phar.phpunit.de/phpunit-old.phar
+mv phpunit-old.phar /usr/bin/phpunit
+service apache2 restart
+dos2unix bonus1
+dos2unix bonus2
+
+
+
+bootstrapdb(){
+    cat <<EOF | mysql -uroot
+    DROP DATABASE IF EXISTS samtt;
+    CREATE DATABASE samtt;
+    USE samtt;
+    CREATE TABLE mo (
+      id int NOT NULL auto_increment,
+      msisdn varchar(20),
+      operatorid int,
+      shortcodeid int,
+      text varchar(255),
+      auth_token varchar(60),
+      created_at DATETIME,
+      process_status TINYINT(1) DEFAULT 0 NOT NULL,
+      PRIMARY KEY(id),
+      INDEX created_at (created_at)
+    ) ;
+EOF
+}
+bootstrapdb
+
+populate_db() {
+	chmod a+x /tmp/populate_db
+	dos2unix  /tmp/populate_db
+    /tmp/populate_db 10000000| mysql -u root samtt
+}
+populate_db

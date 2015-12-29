@@ -1,0 +1,14 @@
+#!/usr/bin/env php
+<?php
+    require_once("config/config.php");
+    use Web\Services\moService;
+
+try{
+    echo moService::getCountOfUnprocessedMOMessages() ."\n";
+}
+catch (PDOException $pdoError){
+    echo $pdoError->getMessage();
+}
+catch (Exception $error){
+    echo $error->getMessage();
+}

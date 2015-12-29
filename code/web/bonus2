@@ -1,0 +1,14 @@
+#!/usr/bin/env php
+<?php
+require_once("config/config.php");
+use Web\Services\moService;
+
+try {
+    if (moService::deleteAllUnprocessedMessage(TRUE) == TRUE) {
+        echo "\n All Unprocessed Items Deleted \n";
+    }
+} catch (PDOException $pdoError) {
+    echo $pdoError->getMessage();
+} catch (Exception $error) {
+    echo $error->getMessage();
+}
