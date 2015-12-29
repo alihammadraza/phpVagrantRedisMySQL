@@ -7,11 +7,9 @@ You can clone/run the entire system by doing:
 
 * `git clone <this repository url>`
 * `vagrant up --provision`
-* run checks against index.php, stats.php and database.
 
 
-The code architecture is based on service/entity model where entities act like validating data
-types and are consumed inside services which perform various functions.
+#The code architecture is based on service/entity model where entities act like validating data types and are consumed inside services which perform various functions.
 
 
 ## SMS Storage API / index.php & redis.php
@@ -22,11 +20,11 @@ via SMS to a so-called shortcode; the Client sends an SMS with subscription requ
 to shortcode 32788 to subscribe to mobile learning services.
 
 An example of a call through to the MO API would look like this:
-http://localhost/index.php?msisdn=60123456789&operatorid=3&shortcodeid=8&text=ON+LEARNING
+http://localhost/index.php?msisdn=60123456789&operatorid=3&shortcodeid=32788&text=ON+LEARNING
 
-index.php uses moService object to store these passed GET values inside MySQL db after performing necessary validation.
+# index.php uses moService object to store these passed GET values inside MySQL db after performing necessary validation.
 
-redis.php used redisService object to store these passed GET values inside Redis-Server but without performing any validation.
+# redis.php used redisService object to store these passed GET values inside Redis-Server but without performing any validation.
 
 The job at hand required fast throughput for processing values, my idea is that we
 could just save the entire $_REQUEST array without validating any data at first (thereby
@@ -39,16 +37,16 @@ can be applied too in order to improve performance.
 In order to try and speed up the application I have turned on php zend opcache which
 resulted in a sizable improvement in page load times on apache bench. But I think
 more can be done here if we were to use nginx instead of apache2 or put haproxy at top
-and only channel index.php requests to nginx with the other going through apache. In
-my experience nginx performs even better than apache with mpm_worker. Changing  settings
-in mysql config file for innodb related values can also bring improvement.
+and only channel index.php requests to nginx with the other going through apache. 
 
 
 ## Stats.php
 
-stats.php file uses the moService object to provide provide with relevant performance statistics of the MO API.
-It providers 
-	1) The number of messages that have been processed in the last 15 minutes
+stats.php file uses the moService object to provide with relevant performance statistics of the MO API in json format 
+which are
+
+	1) The number of messages received in the last 15 minutes
+
 	2) The time taken for processing last 10,000 messages i.e. start and end time 
 
 
