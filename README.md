@@ -9,10 +9,10 @@ You can clone/run the entire system by doing:
 * `vagrant up --provision`
 
 
-#The code architecture is based on service/entity model where entities act like validating data types and are consumed inside services which perform various functions.
+##The code architecture is based on service/entity model where entities act like validating data types and are consumed inside services which perform various functions.
 
 
-## SMS Storage API / index.php & redis.php
+# SMS Storage API / index.php & redis.php
 
 I have tried to model an SMS subscribe service. The industry term for such SMS'es is MO, which 
 stands for Mobile Originated. A Client can subscribe by simply sending a subscription request 
@@ -22,9 +22,9 @@ to shortcode 32788 to subscribe to mobile learning services.
 An example of a call through to the MO API would look like this:
 http://localhost/index.php?msisdn=60123456789&operatorid=3&shortcodeid=32788&text=ON+LEARNING
 
-# index.php uses moService object to store these passed GET values inside MySQL db after performing necessary validation.
+* index.php uses moService object to store these passed GET values inside MySQL db after performing necessary validation.
 
-# redis.php used redisService object to store these passed GET values inside Redis-Server but without performing any validation.
+* redis.php used redisService object to store these passed GET values inside Redis-Server but without performing any validation.
 
 The job at hand required fast throughput for processing values, my idea is that we
 could just save the entire $_REQUEST array without validating any data at first (thereby
@@ -40,7 +40,7 @@ more can be done here if we were to use nginx instead of apache2 or put haproxy 
 and only channel index.php requests to nginx with the other going through apache. 
 
 
-## Stats.php
+# Stats.php
 
 stats.php file uses the moService object to provide with relevant performance statistics of the MO API in json format 
 which are
@@ -50,13 +50,13 @@ which are
 	2) The time taken for processing last 10,000 messages i.e. start and end time 
 
 
-## Bonus 1 script
+# Bonus 1 script
 
 In order to better integrate with the monitoring tools and show how many MO's have been received but
 not yet processed the bonus1 *command line tool* when executed prints out a single integer: the number of 
 MO's received but not yet processed.
 
-## Bonus 2 script
+# Bonus 2 script
 
 The bonus2 *command line tool* when executed clears (removes) all those MO's that have been received
 but have not yet processed .
@@ -68,11 +68,11 @@ processed or unprocessed based on the value in the newly introduced column of
 process_status in table `mo` of mysql db samtt .
 
 
-##PHPUnit tests
+#PHPUnit tests
 The unit tests are not very exhaustive but should be enough to demonstrate my grip on
 the subject.
 
-##Summarizing everything
+#Summarizing everything
 I believe there are several ways to improve performance even further and besides performance 
 is very relative e.g. performance on servers installed with ssd will of course be better,
 however I agree that one should try and do as much as possible in removing any bottlenecks
@@ -82,7 +82,7 @@ trade-offs with different technologies.
 
 
 
-## IMPORTANT
+# IMPORTANT
 *************************************************************************************
 Because of hardware limitations, since my system did not support vt-x ,
 I couldn't run the 64 bit guest os in virtualbox. Consequently I Had to use 32 bit ubuntu
@@ -93,4 +93,8 @@ I had to therefore use this virtualbox version 4.3.28 .
 Please take notice of this scenario, if the machine doesn't boot up for you then it’s very
 likely an issue with your virtualbox but yes maybe switching to 64 bits might just work out
 fine for you though I am unable to test or confirm that.
+
+Kindly note that because of populate_db the vagrant up can take quite some time at the
+end and it may seem like its stuck but its actually only taking a lot of time, this is different
+from the above scenario.
 *************************************************************************************
