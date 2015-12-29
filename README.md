@@ -9,7 +9,7 @@ You can clone/run the entire system by doing:
 * `vagrant up --provision`
 
 
-##The code architecture is based on service/entity model where entities act like validating data types and are consumed inside services which perform various functions.
+###The architecture of the code in 'web' folder is based on service/entity model where entities act like validating data types and are consumed inside services which perform various functions.
 
 
 # SMS Storage API / index.php & redis.php
@@ -24,7 +24,7 @@ http://localhost/index.php?msisdn=60123456789&operatorid=3&shortcodeid=32788&tex
 
 * index.php uses moService object to store these passed GET values inside MySQL db after performing necessary validation.
 
-* redis.php used redisService object to store these passed GET values inside Redis-Server but without performing any validation.
+* redis.php uses redisService object to store these passed GET values inside Redis-Server but without performing any validation.
 
 The job at hand required fast throughput for processing values, my idea is that we
 could just save the entire $_REQUEST array without validating any data at first (thereby
@@ -93,8 +93,4 @@ I had to therefore use this virtualbox version 4.3.28 .
 Please take notice of this scenario, if the machine doesn't boot up for you then it’s very
 likely an issue with your virtualbox but yes maybe switching to 64 bits might just work out
 fine for you though I am unable to test or confirm that.
-
-Kindly note that because of populate_db the vagrant up can take quite some time at the
-end and it may seem like its stuck but its actually only taking a lot of time, this is different
-from the above scenario.
 *************************************************************************************

@@ -52,10 +52,3 @@ bootstrapdb(){
 EOF
 }
 bootstrapdb
-
-populate_db() {
-	chmod a+x /tmp/populate_db
-	dos2unix  /tmp/populate_db
-    /tmp/populate_db 10000000| mysql -u root samtt
-}
-populate_db

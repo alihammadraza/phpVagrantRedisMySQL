@@ -22,6 +22,5 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # end
   config.vm.provision "file", source: "001-talented.conf", destination: "/tmp/001-talented.conf"
   config.vm.provision "file", source: "temp-php.ini", destination: "/tmp/temp-php.ini"
-  config.vm.provision "file", source: "populate_db", destination: "/tmp/populate_db"
   config.vm.provision "shell", path: "./provisioner"
 end
